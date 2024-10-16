@@ -1,74 +1,72 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>README</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            background-color: #f4f4f4;
-            margin: 0;
-            padding: 20px;
-        }
-        .container {
-            max-width: 800px;
-            margin: 0 auto;
-            background-color: #fff;
-            padding: 20px;
-            border-radius: 8px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-        }
-        h1 {
-            color: #333;
-        }
-        h2 {
-            color: #555;
-        }
-        ul {
-            line-height: 1.6;
-        }
-        pre {
-            background-color: #f8f8f8;
-            padding: 10px;
-            border: 1px solid #ddd;
-            border-radius: 4px;
-        }
-    </style>
-</head>
-<body>
-    <div class="container">
-        <h1>Code First Approach with Entity Framework Core</h1>
-        <p>This project demonstrates the Code First approach for creating a database using Entity Framework Core.</p>
+# Patika Code First Database Project
 
-        <h2>Database Context: <code>PatikaFirstDbContext</code></h2>
-        <p>The database context used in this project is named <strong>PatikaFirstDbContext</strong>. The database name is <strong>PatikaCodeFirstDb1</strong>.</p>
+## Overview
 
-        <h2>Database Tables</h2>
-        <ul>
-            <li><strong>Movies Table:</strong></li>
-            <ul>
-                <li><code>Id (int)</code> - Primary key, auto-incremented</li>
-                <li><code>Title (string)</code> - Movie title</li>
-                <li><code>Genre (string)</code> - Movie genre (e.g., Action, Comedy, Drama)</li>
-                <li><code>ReleaseYear (int)</code> - Release year of the movie</li>
-            </ul>
+This project demonstrates how to create a database using the *Code First* approach in *Entity Framework Core. It includes two independent tables: **Movies* and *Games*. These tables are automatically created based on the models defined in the application.
 
-            <li><strong>Games Table:</strong></li>
-            <ul>
-                <li><code>Id (int)</code> - Primary key, auto-incremented</li>
-                <li><code>Name (string)</code> - Game name</li>
-                <li><code>Platform (string)</code> - Platform (e.g., PC, PlayStation, Xbox)</li>
-                <li><code>Rating (decimal)</code> - Game rating (0 to 10)</li>
-            </ul>
-        </ul>
+## Requirements
 
-        <h2>How to Run</h2>
-        <pre>
-1. Clone the repository.
-2. Install Entity Framework Core.
-3. Run the migration commands to create the database.
-        </pre>
-    </div>
-</body>
-</html>
+- *Entity Framework Core* is used to implement the Code First approach.
+- The following models are created:
+  - *Movie* table with fields:
+    - Id (int): Primary key, auto-incremented.
+    - Title (string): Title of the movie.
+    - Genre (string): Genre of the movie (e.g., Action, Comedy, Drama).
+    - ReleaseYear (int): The release year of the movie.
+  - *Game* table with fields:
+    - Id (int): Primary key, auto-incremented.
+    - Name (string): Name of the game.
+    - Platform (string): Platform the game is played on (e.g., PC, PlayStation, Xbox).
+    - Rating (decimal): The rating of the game (between 0 and 10).
+
+## Database Configuration
+
+- *Context Class Name*: PatikaFirstDbContext
+- *Database Name*: PatikaCodeFirstDb1
+- The database contains two tables:
+  - Movies
+  - Games
+
+## How to Run the Project
+
+1. *Install Dependencies*: Ensure you have the required dependencies installed, including Entity Framework Core.
+2. *Configure the Context*: Define the database context class PatikaFirstDbContext with DbSet properties for Movies and Games.
+3. *Migrations*:
+   - Run migrations to create the database schema:
+     bash
+     dotnet ef migrations add InitialCreate
+     dotnet ef database update
+     
+4. *Run the Application*: After the database schema is created, you can run the application to add, update, or retrieve data from the Movies and Games tables.
+
+## Code Sample
+
+Here’s an example of the model classes and DbContext:
+
+```csharp
+public class Movie
+{
+    public int Id { get; set; }
+    public string Title { get; set; }
+    public string Genre { get; set; }
+    public int ReleaseYear { get; set; }
+}
+
+public class Game
+{
+    public int Id { get; set; }
+    public string Name { get; set; }
+    public string Platform { get; set; }
+    public decimal Rating { get; set; }
+}
+
+public class PatikaFirstDbContext : DbContext
+{
+    public DbSet<Movie> Movies { get; set; }
+    public DbSet<Game> Games { get; set; }
+
+    protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+    {
+        optionsBuilder.UseSqlServer("Server=(localdb)\\mssqllocaldb;Database=PatikaCodeFirstDb1;Trusted_Connection=True;");
+    }
+}
